@@ -1,7 +1,7 @@
 #include "data.h"
 
 
-char* init_savefile_dir(void) {
+char *init_savefile_dir(void) {
     /* Get save directory */
     char *saveFileDir = NULL;
 
@@ -33,7 +33,7 @@ int check_save(void) {
 }
 
 
-int* get_save(void) {
+int *get_save(void) {
 /* Reads and returns save data */
     int *data = malloc(5 * sizeof(int));  // Dynamically allocate memory for the array
     int line;
