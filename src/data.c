@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 #include "data.h"
 
 
@@ -14,22 +18,14 @@ char *init_savefile_dir(void) {
 }
 
 
-// ***WORKING***
 int check_save(void) {
-    /* Checks if save_data.txt exsists
+    /* Checks if save exsists
      * returns 1 if true, else returns 0
      */
-    int result;
     char *saveFileDir = init_savefile_dir();
-    if (access(saveFileDir, F_OK) == 0) {
-        result = 1;
-    }
-    else {
-        result = 0;
-    }
+    int result = !(access(saveFileDir, F_OK) == 0);
     free(saveFileDir);
-
-    return(result);
+    return result;
 }
 
 
@@ -76,32 +72,4 @@ int get_userpet(void) {
     }
 
     return petChoice;
-}
-
-
-void display_pet(int petChoice) {
-    /* Print ascii art from txt file depending on petChoice */
-    if (petChoice == 1) {
-        printf("1\n");
-    }
-    else if (petChoice == 2) {
-        printf("2\n");
-    }
-    else {
-        printf("3\n");
-    }
-}
-
-
-// ***WORKING***
-void write_save(int *data) {
-    /* Writes game data to txt file */
-    char *saveFileDir = init_savefile_dir();
-
-    FILE *f = fopen(saveFileDir, "w");
-    for (int i = 0; i < 5; i++) {
-        fprintf(f, "%d\n", data[i]);
-    }
-    fclose(f);
-    free(saveFileDir);
 }

@@ -1,21 +1,46 @@
+#include <stdlib.h>
+#include <ncurses.h>
+#include "gotchi.h"
 #include "data.h"
+#include "render.h"
 
 
 int main(int argc, const char *argv[]) {
-    int *saveData = NULL;  // Declare saveData outside the conditional block
-
-    if (check_save() == 0) {
-        int tempData[5] = {0};
-        tempData[0] = get_userpet();
-        write_save(tempData);
+    Gotchi *gotchi;
+    if (!check_save()) {
+        gotchi = gotchi_init(true);
     }
     else {
-        saveData = get_save();  // Assign saveData inside the else block
+        gotchi = gotchi_init(false);
     }
 
-    if (saveData != NULL) {  // Only free if saveData was allocated
-        free(saveData);
+    // Start ncurses
+    initscr();
+    cbreak();
+    noecho();
+    curs_set(0);
+    timeout(0);
+    start_color();
+
+    // GAME LOOP
+    int ch;
+    while ((ch = getch()) != 'q') {
+        int hDiff = 0, mDiff = 0, hungDiff = 0, tDiff = 0;
+        switch(ch) {
+            case 'f':  // If feed, decrease hunger
+                hungDiff -= 1;
+                break;
+            case 'p':  // If play, increase mood
+                mDiff += 1;
+                break;
+            default:
+                break;
+        }
+        gotchi_update(gotchi, hDiff, mDiff, hungDiff, tDiff);
     }
-    
+
+    endwin();  // Stop ncurses
+    gotchi_save(gotchi);
+    free(gotchi);
     return 0;
 }

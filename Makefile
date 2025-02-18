@@ -4,14 +4,17 @@ INSTALL_DIR = /usr/bin
 CONFIG_DIR = /home/$(USER)/.config/tuigotchi
 
 # Target for building the executable
-tuigotchi: $(SRCDIR)/main.c $(SRCDIR)/data.o
-	gcc $(CFLAGS) -o $@ $(SRCDIR)/main.c $(SRCDIR)/data.o
+tuigotchi: $(SRCDIR)/main.c $(SRCDIR)/gotchi.o $(SRCDIR)/data.o $(SRCDIR)/render.o
+	gcc $(CFLAGS) -o $@ $(SRCDIR)/main.c $(SRCDIR)/gotchi.o $(SRCDIR)/data.o $(SRCDIR)/render.o
 
-$(SRCDIR)/data.o: $(SRCDIR)/data.h $(SRCDIR)/data.c
+$(SRCDIR)/data.o: $(SRCDIR)/data.h $(SRCDIR)/data.c $(SRCDIR)/gotchi.o
 	gcc $(CFLAGS) -c $(SRCDIR)/data.c -o $(SRCDIR)/data.o
 
-$(SRCDIR)/render.o: $(SRCDIR)/render.h $(SRCDIR)/render.c
-	gcc $(CFLAGS) -c $(SRCDIR)/render.c -o $(SRCDIR)/render.o 
+$(SRCDIR)/render.o: $(SRCDIR)/render.h $(SRCDIR)/render.c $(SRCDIR)/gotchi.o
+	gcc $(CFLAGS) -c $(SRCDIR)/render.c -o $(SRCDIR)/render.o
+
+$(SRCDIR)/gotchi.o: $(SRCDIR)/gotchi.h $(SRCDIR).gotchi.c
+	gcc $(CFLAGS) -c $(SRCDIR)/gotchi.c -o $(SRCDIR)/gotchi.o
 
 # Clean up object files and executable
 clean:
