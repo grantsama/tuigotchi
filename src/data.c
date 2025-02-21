@@ -29,31 +29,6 @@ int check_save(void) {
 }
 
 
-int *get_save(void) {
-/* Reads and returns save data */
-    int *data = malloc(5 * sizeof(int));  // Dynamically allocate memory for the array
-    int line;
-
-    if (data == NULL) {
-        // Handle memory allocation failure
-        printf("Memory allocation failed!\n");
-        return NULL;
-    }
-
-    char *saveFileDir = init_savefile_dir();
-    FILE *f = fopen(saveFileDir, "r");
-    for (int i = 0; i < 5; i++) {
-        line = 0;
-        fscanf(f, "%d", &line);
-        data[i] = line;
-    }
-    fclose(f);
-    free(saveFileDir);
-
-    return data;  // Return the pointer to the dynamically allocated array
-}
-
-
 // ***WORKING***
 int get_userpet(void) {
     /* Prompts user to choose a pet */

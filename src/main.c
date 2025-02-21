@@ -6,12 +6,17 @@
 
 
 int main(int argc, const char *argv[]) {
+    if (argc > 0) {
+        perror("Too many arguments\n");
+        return 1;
+    }
+
     Gotchi *gotchi;
     if (!check_save()) {
         gotchi = gotchi_init(true);
-    }
-    else {
+    } else {
         gotchi = gotchi_init(false);
+        gotchi_readsave(gotchi);
     }
 
     // Start ncurses
@@ -39,6 +44,7 @@ int main(int argc, const char *argv[]) {
         gotchi_update(gotchi, hDiff, mDiff, hungDiff, tDiff);
     }
 
+    // Cleanup
     endwin();  // Stop ncurses
     gotchi_save(gotchi);
     free(gotchi);
