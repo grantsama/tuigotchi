@@ -23,13 +23,15 @@ Gotchi *gotchi_init(bool isNew) {
 }
 
 
-void gotchi_update(Gotchi *g, int hDiff, int mDiff, int hungDiff, int tDiff) {
+void gotchi_update(Gotchi *g, int hDiff, int mDiff,
+                   int hungDiff, int tDiff, int lDiff) {
     if (g == NULL) return;  // avoid modifying a NULL pointer
 
     g->health += hDiff;
     g->mood += mDiff;
     g->hunger += hungDiff;
     g->thirst += tDiff;
+    g->litter += lDiff;
 
     if (g->hunger >= TOO_HUNGRY)
         g->health -= 2;

@@ -30,7 +30,7 @@ int main(int argc, const char *argv[]) {
     // GAME LOOP
     int ch;
     while ((ch = getch()) != 'q') {
-        int hDiff = 0, mDiff = 0, hungDiff = 0, tDiff = 0;
+        int hDiff = 0, mDiff = 0, hungDiff = 0, tDiff = 0, lDiff = 0;
         switch(ch) {
             case 'f':  // If feed, decrease hunger
                 hungDiff -= 1;
@@ -38,10 +38,13 @@ int main(int argc, const char *argv[]) {
             case 'p':  // If play, increase mood
                 mDiff += 1;
                 break;
+            case 'c':
+                lDiff -= gotchi->litter;
+                break;
             default:
                 break;
         }
-        gotchi_update(gotchi, hDiff, mDiff, hungDiff, tDiff);
+        gotchi_update(gotchi, hDiff, mDiff, hungDiff, tDiff, lDiff);
     }
 
     // Cleanup

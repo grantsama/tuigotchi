@@ -1,4 +1,5 @@
 #include <stdbool.h>
+
 #define MAX_HEALTH 20
 #define MAX_MOOD 5
 #define TOO_HUNGRY 10
@@ -18,20 +19,18 @@ typedef struct {
     int hunger;
     int thirst;
     bool isSick;
-
 } Gotchi;
 
 
-Gotchi *gotchi_init(bool isNew);
 /* Initialize a gotchi,
  * and sets all attributes to default values
- * DOES NOT SET ANIMAL CHOICE OR NAME
- * */
+ * DOES NOT SET ANIMAL CHOICE OR NAME */
+Gotchi *gotchi_init(bool isNew);
 
-void gotchi_update(Gotchi *gotchi, int healthDiff, int moodDiff, int hungDiff, int thirstDiff);
 /* Update the gotchi.
- * Alter gotchi's attributes based on function params.
- * */
+ * Alter gotchi's attributes based on function params. */
+void gotchi_update(Gotchi *gotchi, int healthDiff, int moodDiff,
+                   int hungDiff, int thirstDiff, int litterDiff);
 
 void gotchi_save(Gotchi *gotchi);
 
