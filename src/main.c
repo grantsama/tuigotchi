@@ -1,12 +1,12 @@
 #include <stdlib.h>
 #include <ncurses.h>
-#include "gotchi.h"
 #include "data.h"
+#include "gotchi.h"
 #include "render.h"
 
 
 int main(int argc, const char *argv[]) {
-    if (argc > 0) {
+    if (argc > 1) {
         perror("Too many arguments\n");
         return 1;
     }
@@ -16,7 +16,7 @@ int main(int argc, const char *argv[]) {
         gotchi = gotchi_init(true);
     } else {
         gotchi = gotchi_init(false);
-        gotchi_readsave(gotchi);
+        readsave(gotchi);
     }
 
     // Start ncurses
@@ -49,7 +49,7 @@ int main(int argc, const char *argv[]) {
 
     // Cleanup
     endwin();  // Stop ncurses
-    gotchi_save(gotchi);
+    save(gotchi);
     free(gotchi);
     return 0;
 }

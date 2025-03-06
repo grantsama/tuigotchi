@@ -48,3 +48,56 @@ int get_userpet(void) {
 
     return petChoice;
 }
+
+
+void save(Gotchi *gotchi) {
+    if (gotchi == NULL) {
+        perror("Cannot save: Gotchi is NULL");
+        return;
+    }
+
+    char *saveFileDir = init_savefile_dir();
+    FILE *f = fopen(saveFileDir, "wb");
+    if (f == NULL) {
+        perror("Error opening save file for writing\n");
+        free(saveFileDir);
+        free(gotchi);
+        exit(1);
+    }
+
+    size_t bytesWritten = fwrite(&gotchi, sizeof(*gotchi), 1, f);
+    if (bytesWritten != 1) {
+        perror("Error writing save data\n");
+    }
+    fclose(f);
+    free(saveFileDir);
+}
+
+
+void readsave(Gotchi *gotchi) {
+    if (gotchi == NULL) {
+        perror("Cannot load: Gotchi pointer is NULL\n");
+        return;
+    }
+
+    char *saveFileDir = init_savefile_dir();
+    FILE *f = fopen(saveFileDir, "rb");
+    if (f == NULL) {
+        perror("Error opening save file for reading\n");
+        free(saveFileDir);
+        free(gotchi);
+        exit(1);
+    }
+
+    size_t bytesRead = fread(gotchi, sizeof(Gotchi), 1, f);
+    if (bytesRead != 1) {
+        perror("Error reading save data\n");
+        fclose(f);
+        free(saveFileDir);
+        free(gotchi);
+        exit(1);
+    }
+
+    fclose(f);
+    free(saveFileDir);
+}

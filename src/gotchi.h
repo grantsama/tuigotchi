@@ -1,3 +1,5 @@
+#ifndef GOTCHI_H
+#define GOTCHI_H
 #include <stdbool.h>
 
 #define MAX_HEALTH 20
@@ -8,7 +10,6 @@
 #define CAT 0
 #define DOG 1
 #define HAM 2
-
 
 typedef struct {
     short animal;
@@ -21,9 +22,9 @@ typedef struct {
     bool isSick;
 } Gotchi;
 
-
 /* Initialize a gotchi,
  * and sets all attributes to default values
+ * Caller must free returned pointer.
  * DOES NOT SET ANIMAL CHOICE OR NAME */
 Gotchi *gotchi_init(bool isNew);
 
@@ -32,6 +33,4 @@ Gotchi *gotchi_init(bool isNew);
 void gotchi_update(Gotchi *gotchi, int healthDiff, int moodDiff,
                    int hungDiff, int thirstDiff, int litterDiff);
 
-void gotchi_save(Gotchi *gotchi);
-
-void gotchi_readsave(Gotchi *gotchi);
+#endif
