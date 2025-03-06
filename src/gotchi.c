@@ -16,6 +16,7 @@ Gotchi *gotchi_init(bool isNew) {
         gotchi->isSick = false;
         gotchi->hunger = 0;
         gotchi->thirst = 0;
+        gotchi->litter = 0;
         gotchi->name[0] = '\0';
     }
     return gotchi;
@@ -29,6 +30,19 @@ void gotchi_update(Gotchi *g, int hDiff, int mDiff, int hungDiff, int tDiff) {
     g->mood += mDiff;
     g->hunger += hungDiff;
     g->thirst += tDiff;
+
+    if (g->hunger >= TOO_HUNGRY)
+        g->health -= 2;
+    if (g->thirst >= TOO_THIRSTY)
+        g->health -= 3;
+    if (g->mood == 0)
+        g->health -= 1;
+    if (g->litter >= TOO_POOPY) {
+        g->isSick = true;
+        g->health -= 2;
+    } else {
+        g->isSick = false;
+    }
 }
 
 

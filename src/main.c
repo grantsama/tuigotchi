@@ -50,3 +50,4 @@ int main(int argc, const char *argv[]) {
     free(gotchi);
     return 0;
 }
+
