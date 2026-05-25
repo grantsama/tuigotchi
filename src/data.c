@@ -23,19 +23,21 @@ int check_save(void) {
      * returns 1 if true, else returns 0
      */
     char *saveFileDir = init_savefile_dir();
-    int result = !(access(saveFileDir, F_OK) == 0);
+    int result = (access(saveFileDir, F_OK) == 0);
     free(saveFileDir);
     return result;
 }
 
 
-// ***WORKING***
 int get_userpet(void) {
     /* Prompts user to choose a pet */
     int petChoice;
     printf("Choose your pet: 1. Cat  2. Dog  3. Hamster (input number)\n");
     printf("> ");
     scanf("%d", &petChoice);
+
+    while(getchar() != '\n');  // Remove the newline left by scanf so fgets works later
+
     if (petChoice == 1) {
         printf("Cat Selected!\n");
     }
@@ -46,7 +48,16 @@ int get_userpet(void) {
         printf("Hamster Selected!\n");
     }
 
-    return petChoice;
+    return petChoice - 1;
+}
+
+
+void get_petname(char *nameBuf, int maxLen) {
+    printf("What will you name your pet?\n> ");
+    if (fgets(nameBuf, maxLen, stdin) != NULL) {
+        // Strip the trailing newline character that fgets captures
+        nameBuf[strcspn(nameBuf, "\n")] = '\0';
+    }
 }
 
 

@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <stdlib.h>
 #include <ncurses.h>
 #include "data.h"
@@ -12,11 +13,17 @@ int main(int argc, const char *argv[]) {
     }
 
     Gotchi *gotchi;
-    if (!check_save()) {
-        gotchi = gotchi_init(true);
-    } else {
+    if (check_save()) {
         gotchi = gotchi_init(false);
         readsave(gotchi);
+        printf("Welcome back, %s!\n", gotchi->name);
+        sleep(1); // Give the user a moment to see this before ncurses clears the screen
+    } else {
+        // No save found, start new game flow!
+        printf("Welcome to TuiGotchi!\n");
+        gotchi = gotchi_init(true);
+        gotchi->animal = get_userpet();
+        get_petname(gotchi->name, sizeof(gotchi->name));
     }
 
     // Start ncurses

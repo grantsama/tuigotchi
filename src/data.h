@@ -9,6 +9,8 @@ void save(Gotchi *gotchi);
 
 void readsave(Gotchi *gotchi);
 
+void get_petname(char *nameBuf, int maxLen);
+
 int check_save(void);
 
 int get_userpet(void);
