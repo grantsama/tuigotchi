@@ -24,7 +24,7 @@ int main(int argc, const char *argv[]) {
     cbreak();
     noecho();
     curs_set(0);
-    timeout(0);
+    timeout(1000);
     start_color();
 
     // GAME LOOP

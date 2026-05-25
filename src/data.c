@@ -65,7 +65,7 @@ void save(Gotchi *gotchi) {
         exit(1);
     }
 
-    size_t bytesWritten = fwrite(&gotchi, sizeof(*gotchi), 1, f);
+    size_t bytesWritten = fwrite(gotchi, sizeof(Gotchi), 1, f);
     if (bytesWritten != 1) {
         perror("Error writing save data\n");
     }

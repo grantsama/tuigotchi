@@ -13,7 +13,7 @@ $(SRCDIR)/data.o: $(SRCDIR)/data.h $(SRCDIR)/data.c $(SRCDIR)/gotchi.o
 $(SRCDIR)/render.o: $(SRCDIR)/render.h $(SRCDIR)/render.c $(SRCDIR)/gotchi.o
 	gcc $(CFLAGS) -c $(SRCDIR)/render.c -o $(SRCDIR)/render.o
 
-$(SRCDIR)/gotchi.o: $(SRCDIR)/gotchi.h $(SRCDIR).gotchi.c
+$(SRCDIR)/gotchi.o: $(SRCDIR)/gotchi.h $(SRCDIR)/gotchi.c
 	gcc $(CFLAGS) -c $(SRCDIR)/gotchi.c -o $(SRCDIR)/gotchi.o
 
 # Clean up object files and executable
