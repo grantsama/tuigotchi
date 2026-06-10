@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "gotchi.h"
 
-
 Gotchi *gotchi_init(bool isNew) {
     Gotchi *gotchi = calloc(1, sizeof(Gotchi));
     if (gotchi == NULL) {
@@ -20,7 +19,6 @@ Gotchi *gotchi_init(bool isNew) {
     }
     return gotchi;
 }
-
 
 void gotchi_update(Gotchi *g, int hDiff, int mDiff,
                    int hungDiff, int tDiff, int lDiff) {

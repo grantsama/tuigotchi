@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include "data.h"
 
-
 char *init_savefile_dir(void) {
     /* Get save directory */
     char *saveFileDir = NULL;
@@ -17,7 +16,6 @@ char *init_savefile_dir(void) {
     return saveFileDir;
 }
 
-
 int check_save(void) {
     /* Checks if save exsists
      * returns 1 if true, else returns 0
@@ -27,7 +25,6 @@ int check_save(void) {
     free(saveFileDir);
     return result;
 }
-
 
 int get_userpet(void) {
     /* Prompts user to choose a pet */
@@ -51,7 +48,6 @@ int get_userpet(void) {
     return petChoice - 1;
 }
 
-
 void get_petname(char *nameBuf, int maxLen) {
     printf("What will you name your pet?\n> ");
     if (fgets(nameBuf, maxLen, stdin) != NULL) {
@@ -59,7 +55,6 @@ void get_petname(char *nameBuf, int maxLen) {
         nameBuf[strcspn(nameBuf, "\n")] = '\0';
     }
 }
-
 
 void save(Gotchi *gotchi) {
     if (gotchi == NULL) {
@@ -83,7 +78,6 @@ void save(Gotchi *gotchi) {
     fclose(f);
     free(saveFileDir);
 }
-
 
 void readsave(Gotchi *gotchi) {
     if (gotchi == NULL) {

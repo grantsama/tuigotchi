@@ -5,7 +5,6 @@
 #include "gotchi.h"
 #include "render.h"
 
-
 int main(int argc, const char *argv[]) {
     if (argc > 1) {
         perror("Too many arguments\n");
@@ -60,4 +59,3 @@ int main(int argc, const char *argv[]) {
     free(gotchi);
     return 0;
 }
-
