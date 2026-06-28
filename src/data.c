@@ -17,11 +17,25 @@ char *init_savefile_dir(void) {
 }
 
 int check_save(void) {
-    /* Checks if save exsists
+    /* Checks if save exists and is the correct size
      * returns 1 if true, else returns 0
      */
     char *saveFileDir = init_savefile_dir();
-    int result = (access(saveFileDir, F_OK) == 0);
+    int result = 0;
+    
+    FILE *f = fopen(saveFileDir, "rb");
+    if (f != NULL) {
+        // Seek to the end to check the file size
+        fseek(f, 0, SEEK_END);
+        long fileSize = ftell(f);
+        
+        // Only return true if the file contains exactly one Gotchi struct
+        if (fileSize == sizeof(Gotchi)) {
+            result = 1;
+        }
+        fclose(f);
+    }
+    
     free(saveFileDir);
     return result;
 }
@@ -96,7 +110,11 @@ void readsave(Gotchi *gotchi) {
 
     size_t bytesRead = fread(gotchi, sizeof(Gotchi), 1, f);
     if (bytesRead != 1) {
-        perror("Error reading save data\n");
+        if (feof(f) != 1) {
+            fprintf(stderr, "Error: Save file is empty or incomplete.\n");
+        } else {
+            perror("Error reading save data\n");
+        }
         fclose(f);
         free(saveFileDir);
         free(gotchi);

@@ -28,7 +28,7 @@ build: tuigotchi
 	sudo mv tuigotchi $(INSTALL_DIR)
 	@printf "\nInstallation complete!\n"
 
-# Uninstall the executable and configuration files
+# Uninstall the executable, configuration, and save files
 uninstall:
 	sudo rm -f $(INSTALL_DIR)/tuigotchi
 	rm -rf $(CONFIG_DIR)

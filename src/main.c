@@ -33,8 +33,13 @@ int main(int argc, const char *argv[]) {
     timeout(1000);
     start_color();
 
+
     // GAME LOOP
     int ch;
+    
+    // Draw the initial state before waiting for input
+    render_ui(the_gotchi); 
+    
     while ((ch = getch()) != 'q') {
         int hDiff = 0, mDiff = 0, hungDiff = 0, tDiff = 0, lDiff = 0;
         switch(ch) {
@@ -44,18 +49,26 @@ int main(int argc, const char *argv[]) {
             case 'p':  // If play, increase mood
                 mDiff += 1;
                 break;
-            case 'c':
-                lDiff -= the_gotchi->litter;
+            case 'c':  // Clean
+                lDiff -= 1; // Assuming cleaning reduces litter
                 break;
-            default:
-                break;
+            case ERR:  // This handles the timeout(1000) interval where no key is pressed!
+                break; 
         }
-        gotchi_update(the_gotchi, hDiff, mDiff, hungDiff, tDiff, lDiff);
-    }
 
-    // Cleanup
-    endwin();  // Stop ncurses
+        // Apply stat changes
+        gotchi_update(the_gotchi, hDiff, mDiff, hungDiff, tDiff, lDiff);
+        
+        // Redraw the screen with the updated stats
+        render_ui(the_gotchi);
+    }
+    
+    // Clean up ncurses and save before exiting
+    endwin();
     save(the_gotchi);
+
+
+    // ... free the_gotchi and return ...
     free(the_gotchi);
     return 0;
 }
