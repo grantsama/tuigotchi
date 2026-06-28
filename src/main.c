@@ -11,18 +11,18 @@ int main(int argc, const char *argv[]) {
         return 1;
     }
 
-    Gotchi *gotchi;
+    Gotchi *the_gotchi;
     if (check_save()) {
-        gotchi = gotchi_init(false);
-        readsave(gotchi);
-        printf("Welcome back, %s!\n", gotchi->name);
+        the_gotchi = gotchi_init(false);
+        readsave(the_gotchi);
+        printf("Welcome back, %s!\n", the_gotchi->name);
         sleep(1); // Give the user a moment to see this before ncurses clears the screen
     } else {
         // No save found, start new game flow!
         printf("Welcome to TuiGotchi!\n");
-        gotchi = gotchi_init(true);
-        gotchi->animal = get_userpet();
-        get_petname(gotchi->name, sizeof(gotchi->name));
+        the_gotchi = gotchi_init(true);
+        the_gotchi->animal = get_userpet();
+        get_petname(the_gotchi->name, sizeof(the_gotchi->name));
     }
 
     // Start ncurses
@@ -45,17 +45,17 @@ int main(int argc, const char *argv[]) {
                 mDiff += 1;
                 break;
             case 'c':
-                lDiff -= gotchi->litter;
+                lDiff -= the_gotchi->litter;
                 break;
             default:
                 break;
         }
-        gotchi_update(gotchi, hDiff, mDiff, hungDiff, tDiff, lDiff);
+        gotchi_update(the_gotchi, hDiff, mDiff, hungDiff, tDiff, lDiff);
     }
 
     // Cleanup
     endwin();  // Stop ncurses
-    save(gotchi);
-    free(gotchi);
+    save(the_gotchi);
+    free(the_gotchi);
     return 0;
 }
