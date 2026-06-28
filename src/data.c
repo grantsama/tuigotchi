@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 #include "data.h"
 
 char *init_savefile_dir(void) {
@@ -75,6 +76,8 @@ void save(Gotchi *gotchi) {
         perror("Cannot save: Gotchi is NULL");
         return;
     }
+
+    gotchi->last_saved = time(NULL);  // record time before saving data
 
     char *saveFileDir = init_savefile_dir();
     FILE *f = fopen(saveFileDir, "wb");

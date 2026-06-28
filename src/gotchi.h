@@ -1,6 +1,7 @@
 #ifndef GOTCHI_H
 #define GOTCHI_H
 #include <stdbool.h>
+#include <time.h>
 
 #define MAX_HEALTH 20
 #define MAX_MOOD 5
@@ -10,6 +11,9 @@
 #define CAT 0
 #define DOG 1
 #define HAM 2
+#define MAX_HUNGER 15
+#define MAX_THIRST 12
+#define MAX_LITTER 10
 
 typedef struct {
     short animal;
@@ -20,6 +24,7 @@ typedef struct {
     int hunger;
     int thirst;
     bool isSick;
+    time_t last_saved;
 } Gotchi;
 
 /* Initialize a gotchi,

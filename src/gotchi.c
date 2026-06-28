@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "gotchi.h"
 
 Gotchi *gotchi_init(bool isNew) {
@@ -10,12 +11,13 @@ Gotchi *gotchi_init(bool isNew) {
     }
     if (isNew) {
         gotchi->health = MAX_HEALTH;
-        gotchi->mood = MAX_MOOD;
+        gotchi->mood = 2;
         gotchi->isSick = false;
-        gotchi->hunger = 0;
-        gotchi->thirst = 0;
+        gotchi->hunger = 5;
+        gotchi->thirst = 5;
         gotchi->litter = 0;
         gotchi->name[0] = '\0';
+        gotchi->last_saved = time(NULL);
     }
     return gotchi;
 }
@@ -24,12 +26,30 @@ void gotchi_update(Gotchi *g, int hDiff, int mDiff,
                    int hungDiff, int tDiff, int lDiff) {
     if (g == NULL) return;  // avoid modifying a NULL pointer
 
+    // Apply changes
     g->health += hDiff;
     g->mood += mDiff;
     g->hunger += hungDiff;
     g->thirst += tDiff;
     g->litter += lDiff;
 
+    // Clamp values between 0 and their maximums
+    if (g->health > MAX_HEALTH) g->health = MAX_HEALTH;
+    if (g->health < 0) g->health = 0;
+
+    if (g->mood > MAX_MOOD) g->mood = MAX_MOOD;
+    if (g->mood < 0) g->mood = 0;
+
+    if (g->hunger > MAX_HUNGER) g->hunger = MAX_HUNGER;
+    if (g->hunger < 0) g->hunger = 0;
+
+    if (g->thirst > MAX_THIRST) g->thirst = MAX_THIRST;
+    if (g->thirst < 0) g->thirst = 0;
+
+    if (g->litter > MAX_LITTER) g->litter = MAX_LITTER;
+    if (g->litter < 0) g->litter = 0;
+
+    // Apply penalties if thresholds are crossed
     if (g->hunger >= TOO_HUNGRY)
         g->health -= 2;
     if (g->thirst >= TOO_THIRSTY)
@@ -38,8 +58,9 @@ void gotchi_update(Gotchi *g, int hDiff, int mDiff,
         g->health -= 1;
     if (g->litter >= TOO_POOPY) {
         g->isSick = true;
-        g->health -= 2;
-    } else {
-        g->isSick = false;
+        g->health -= 2; // Adding a health penalty for sickness logic
     }
+    
+    // One final clamp for health, just in case penalties dropped it below 0
+    if (g->health < 0) g->health = 0;
 }
