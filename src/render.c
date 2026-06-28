@@ -80,7 +80,7 @@ void render_ui(Gotchi *g) {
     }
 
     // Draw controls at the bottom
-    mvprintw(max_y - 2, 2, "Controls: [f] Feed  [p] Play  [c] Clean  [q] Quit");
+    mvprintw(max_y - 2, 2, "Controls: [f] Feed [w] Water [p] Play  [c] Clean  [q] Quit");
 
     refresh(); // Push the drawing buffer to the actual terminal screen
 }

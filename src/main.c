@@ -25,12 +25,12 @@ int main(int argc, const char *argv[]) {
         // Calculate how many "ticks" have passed. 
         // 3600 seconds = 1 hour. 
         // For testing purposes, you might want to change 3600 to 60 (1 minute) to see it work quickly!
-        int intervals = (int)(seconds_passed / 3600); 
+        int intervals = (int)(seconds_passed / 60); 
         
         if (intervals > 0) {
             // Penalize: 0 health diff, negative mood, positive hunger/thirst/litter
             gotchi_update(the_gotchi, 0, -intervals, intervals, intervals, intervals);
-            printf("Your pet missed you! (%d hours passed)\n", intervals);
+            printf("Your pet missed you! (%d minutes passed)\n", intervals);
         } else {
             printf("Welcome back, %s!\n", the_gotchi->name);
         }
@@ -62,6 +62,9 @@ int main(int argc, const char *argv[]) {
         switch(ch) {
             case 'f':  // If feed, decrease hunger
                 hungDiff -= 1;
+                break;
+            case 'w':  // If water, decrease thirst
+                tDiff -= 1;
                 break;
             case 'p':  // If play, increase mood
                 mDiff += 1;
