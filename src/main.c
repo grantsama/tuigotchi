@@ -1,12 +1,19 @@
+#define _XOPEN_SOURCE_EXTENDED 1
 #include <unistd.h>
 #include <stdlib.h>
 #include <ncurses.h>
 #include <time.h>
+#include <locale.h>
 #include "data.h"
 #include "gotchi.h"
 #include "render.h"
 
 int main(int argc, const char *argv[]) {
+    if (setlocale(LC_ALL, "") == NULL) {
+        printf("Warning: Could not set locale! Icons may not render correctly.\n");
+        sleep(2);
+    }
+
     if (argc > 1) {
         perror("Too many arguments\n");
         return 1;
@@ -51,6 +58,7 @@ int main(int argc, const char *argv[]) {
     curs_set(0);
     timeout(1000);
     start_color();
+    use_default_colors();
 
     /* --------------------- GAME LOOP ---------------------- */
     int ch;

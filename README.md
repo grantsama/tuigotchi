@@ -3,7 +3,7 @@ Tamagotchi-like terminal UI application.
 
 ## TODO
 - [x] Basic rendering
-- [ ] Animated art using nerd font symbols
+- [x] Animated art using nerd font symbols
 - [x] Keyboard interupts
 - [x] Confirm data saving
 - [x] Implement a way to check time since last launch

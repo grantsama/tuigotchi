@@ -5,7 +5,7 @@ CONFIG_DIR = /home/$(USER)/.config/tuigotchi
 
 # Target for building the executable
 tuigotchi: $(SRCDIR)/main.c $(SRCDIR)/gotchi.o $(SRCDIR)/data.o $(SRCDIR)/render.o
-	gcc $(CFLAGS) -o $@ $(SRCDIR)/main.c $(SRCDIR)/gotchi.o $(SRCDIR)/data.o $(SRCDIR)/render.o -lncurses
+	gcc $(CFLAGS) -o $@ $(SRCDIR)/main.c $(SRCDIR)/gotchi.o $(SRCDIR)/data.o $(SRCDIR)/render.o -lncursesw
 
 $(SRCDIR)/data.o: $(SRCDIR)/data.h $(SRCDIR)/data.c $(SRCDIR)/gotchi.o
 	gcc $(CFLAGS) -c $(SRCDIR)/data.c -o $(SRCDIR)/data.o
