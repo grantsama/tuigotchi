@@ -13,7 +13,7 @@ void draw_external_art(int animal, int frame, int max_y, int max_x) {
     const char *animal_names[] = {"cat", "dog", "ham"};
     
     // Build the full path to the text file
-    snprintf(filepath, sizeof(filepath), "%s/.config/tuigotchi/gotchis/%s_%d.txt", 
+    snprintf(filepath, sizeof(filepath), "%s/.config/tuigotchi/art/%s_%d.txt", 
              home, animal_names[animal], frame);
              
     FILE *f = fopen(filepath, "r");

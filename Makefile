@@ -22,9 +22,9 @@ clean:
 
 # Install the executable and configuration files
 build: tuigotchi
-	mkdir -p $(CONFIG_DIR)/dat $(CONFIG_DIR)/gotchis
+	mkdir -p $(CONFIG_DIR)/dat $(CONFIG_DIR)/art
 	cp -a dat/. $(CONFIG_DIR)/dat/
-	cp -a gotchis/. $(CONFIG_DIR)/gotchis/
+	cp -a art/. $(CONFIG_DIR)/art/
 	sudo mv tuigotchi $(INSTALL_DIR)
 	@printf "\nInstallation complete!\n"
 
