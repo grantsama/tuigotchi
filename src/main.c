@@ -46,7 +46,7 @@ int main(int argc, const char *argv[]) {
         } else {
             printf("Welcome back, owner of %s!\n", the_gotchi->name);
         }
-        sleep(2); // Give the user 2 seconds to read the message before ncurses takes over
+        sleep(1); // Give the user 2 seconds to read the message before ncurses takes over
 
     } else {
         // No save found, start new game flow!
