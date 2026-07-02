@@ -8,9 +8,14 @@
 char *init_savefile_dir(void) {
     /* Get save directory */
     char *saveFileDir = NULL;
-
     const char *home = getenv("HOME");
     saveFileDir = malloc(strlen(home) + strlen("/.config/tuigotchi/dat/save") + 1);
+
+    if (saveFileDir == NULL) {
+        perror("Error allocating memory for save directory\n");
+        exit(1);
+    }
+
     strcpy(saveFileDir, home);
     strcat(saveFileDir, "/.config/tuigotchi/dat/save");
 
