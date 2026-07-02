@@ -60,7 +60,7 @@ void gotchi_update(Gotchi *g, int hDiff, int mDiff,
         g->isSick = true;
         g->health -= 2; // Adding a health penalty for sickness logic
     }
-    
+
     // One final clamp for health, just in case penalties dropped it below 0
     if (g->health < 0) g->health = 0;
 }

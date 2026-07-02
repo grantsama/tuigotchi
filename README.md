@@ -7,7 +7,7 @@ Tamagotchi-like terminal UI application.
 - [x] Keyboard interupts
 - [x] Confirm data saving
 - [x] Implement a way to check time since last launch
-- [ ] Make it look good
+- [x] Make it look good (subjective ig but it looks alright)
 
 ## Dependencies
 The ncurses-devel package is needed to build from source.
