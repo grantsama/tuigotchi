@@ -9,5 +9,16 @@ Tamagotchi-like terminal UI application.
 - [x] Implement a way to check time since last launch
 - [x] Make it look good (subjective ig but it looks alright)
 
+# Installation
+1. Clone this repo
+2. cd into "tuigotchi"
+3. Run "make install" (You may be prompt to enter your passcode)
+4. Done!
+
 ## Dependencies
 The ncurses-devel package is needed to build from source.
+
+# Uninstall
+1. cd into "tuigotchi"
+2. Run "make uninstall"
+3. Done!
