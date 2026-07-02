@@ -3,17 +3,17 @@
 #include <stdbool.h>
 #include <time.h>
 
-#define MAX_HEALTH 20
+#define MAX_HEALTH 10
 #define MAX_MOOD 5
-#define TOO_HUNGRY 10
-#define TOO_THIRSTY 8
-#define TOO_POOPY 5
+#define TOO_HUNGRY 4
+#define TOO_THIRSTY 4
+#define TOO_POOPY 4
 #define CAT 0
 #define DOG 1
 #define HAM 2
-#define MAX_HUNGER 15
-#define MAX_THIRST 12
-#define MAX_LITTER 10
+#define MAX_HUNGER 5
+#define MAX_THIRST 5
+#define MAX_LITTER 5
 
 typedef struct {
     short animal;

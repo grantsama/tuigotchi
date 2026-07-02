@@ -11,10 +11,10 @@ Gotchi *gotchi_init(bool isNew) {
     }
     if (isNew) {
         gotchi->health = MAX_HEALTH;
-        gotchi->mood = 2;
+        gotchi->mood = 3;
         gotchi->isSick = false;
-        gotchi->hunger = 5;
-        gotchi->thirst = 5;
+        gotchi->hunger = 2;
+        gotchi->thirst = 1;
         gotchi->litter = 0;
         gotchi->name[0] = '\0';
         gotchi->last_saved = time(NULL);

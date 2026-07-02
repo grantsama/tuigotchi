@@ -23,20 +23,20 @@ int check_save(void) {
      */
     char *saveFileDir = init_savefile_dir();
     int result = 0;
-    
+
     FILE *f = fopen(saveFileDir, "rb");
     if (f != NULL) {
         // Seek to the end to check the file size
         fseek(f, 0, SEEK_END);
         long fileSize = ftell(f);
-        
+
         // Only return true if the file contains exactly one Gotchi struct
         if (fileSize == sizeof(Gotchi)) {
             result = 1;
         }
         fclose(f);
     }
-    
+
     free(saveFileDir);
     return result;
 }

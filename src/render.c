@@ -52,16 +52,23 @@ void draw_external_art(int animal, int frame, int max_y, int max_x) {
 
 void draw_stat_bar(int y, int x, const char* label, int val,
                    int max, const char* symbol, int color_pair) {
-
+    // Print the label in default colors
     mvprintw(y, x, "%-8s", label);
+
+    // Turn on the color for the filled symbols
     attron(COLOR_PAIR(color_pair));
     move(y, x + 8);
 
+    // Draw the current value
     for (int i = 0; i < val; i++) {
-        printw("%s ", symbol);
+        printw("%s", symbol);
     }
-
     attroff(COLOR_PAIR(color_pair));
+
+    // Draw the empty remaining slots as a subtle dot
+    for (int i = val; i < max; i++) {
+        printw("· ");
+    }
 }
 
 void render_ui(Gotchi *g) {
@@ -77,16 +84,47 @@ void render_ui(Gotchi *g) {
     mvprintw(1, (max_x - strlen(g->name)) / 2, "%s", g->name);
     attroff(A_BOLD);
 
-    // --- Color Logic ---
-    int health_pair = (g->health <= 5) ? 3 : ((g->health <= 12) ? 2 : 1);
-    int hunger_pair = (g->hunger >= 10) ? 3 : ((g->hunger >= 5) ? 2 : 1);
+    int health_pair, hunger_pair, thirst_pair, litter_pair;
+    // Health (Max 10)
+    if (g->health <= 3) {
+        health_pair = 3; // Red
+    } else if (g->health <= 6) {
+        health_pair = 2; // Yellow
+    } else {
+        health_pair = 1; // Green
+    }
+    // Hunger (Max 5)
+    if (g->hunger >= TOO_HUNGRY) {
+        hunger_pair = 3; // Red
+    } else if (g->hunger >= 3) {
+        hunger_pair = 2; // Yellow
+    } else {
+        hunger_pair = 1; // Green
+    }
+    // Thirst (Max 5)
+    if (g->thirst >= TOO_THIRSTY) {
+        thirst_pair = 3; // Red
+    } else if (g->thirst >= 3) {
+        thirst_pair = 2; // Yellow
+    } else {
+        thirst_pair = 4; // Cyan
+    }
+    // Litter (Max 5)
+    if (g->litter >= TOO_POOPY) {
+        litter_pair = 3; // Red
+    } else if (g->litter >= 3) {
+        litter_pair = 2; // Yellow
+    } else {
+        litter_pair = 1; // Green
+    }
 
     // --- Draw Stat Bars with Nerd Font Symbols ---
-    draw_stat_bar(3, 2, "Health:", g->health, 20, "󰋑 ", health_pair);
-    draw_stat_bar(4, 2, "Mood:",   g->mood,    5, " ", 4);
-    draw_stat_bar(5, 2, "Hunger:", g->hunger, 15, "󱐟 ", hunger_pair);
-    draw_stat_bar(6, 2, "Thirst:", g->thirst, 12, "󰖌 ", 4);
-    draw_stat_bar(7, 2, "Litter:", g->litter, 10, " ", 2);
+    // We now use the constants from gotchi.h instead of hardcoded numbers!
+    draw_stat_bar(3, 2, "Health:", g->health, MAX_HEALTH, "󰋑 ", health_pair);
+    draw_stat_bar(4, 2, "Mood:",   g->mood,   MAX_MOOD,   " ", 4);
+    draw_stat_bar(5, 2, "Hunger:", g->hunger, MAX_HUNGER, "󱐟 ", hunger_pair);
+    draw_stat_bar(6, 2, "Thirst:", g->thirst, MAX_THIRST, "󰖌 ", thirst_pair);
+    draw_stat_bar(7, 2, "Litter:", g->litter, MAX_LITTER, " ", litter_pair);
 
     // Show sickness status
     if (g->isSick) {
