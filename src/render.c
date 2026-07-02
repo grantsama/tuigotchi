@@ -8,34 +8,34 @@
 void draw_external_art(int animal, int frame, int max_y, int max_x) {
     char filepath[256];
     const char *home = getenv("HOME");
-    
+
     // Map the integer animal ID to the prefix of our text files
     const char *animal_names[] = {"cat", "dog", "ham"};
-    
+
     // Build the full path to the text file
-    snprintf(filepath, sizeof(filepath), "%s/.config/tuigotchi/art/%s_%d.txt", 
+    snprintf(filepath, sizeof(filepath), "%s/.config/tuigotchi/art/%s_%d.txt",
              home, animal_names[animal], frame);
-             
+
     FILE *f = fopen(filepath, "r");
     if (f == NULL) {
         mvprintw(max_y / 2, max_x / 2 - 10, "Art file not found!");
-        return; 
+        return;
     }
 
-    char lines[15][100]; 
+    char lines[15][100];
     int line_count = 0;
     int max_width = 0; // NEW: Keep track of the widest line!
-    
+
     while (fgets(lines[line_count], sizeof(lines[0]), f) && line_count < 15) {
         // Strip the trailing newline
         lines[line_count][strcspn(lines[line_count], "\r\n")] = '\0';
-        
+
         // NEW: Check if this line is the widest one we've seen so far
         int current_len = strlen(lines[line_count]);
         if (current_len > max_width) {
             max_width = current_len;
         }
-        
+
         line_count++;
     }
     fclose(f);
@@ -43,7 +43,7 @@ void draw_external_art(int animal, int frame, int max_y, int max_x) {
     // Calculate the starting position for the ENTIRE block based on max_width
     int start_y = max_y / 2 - line_count / 2;
     int start_x = max_x / 2 - max_width / 2;
-    
+
     for (int i = 0; i < line_count; i++) {
         // Draw every line starting at the exact same X coordinate!
         mvprintw(start_y + i, start_x, "%s", lines[i]);
@@ -51,25 +51,17 @@ void draw_external_art(int animal, int frame, int max_y, int max_x) {
 }
 
 void draw_stat_bar(int y, int x, const char* label, int val,
-                   int max, const char* symbol) {
-// Print the label in default colors
-    mvprintw(y, x, "%-8s", label); 
-    
-    // Turn on the color for the symbols
-    //attron(COLOR_PAIR(color_pair));
-    
-    // Move the cursor to the starting position for the symbols
+                   int max, const char* symbol, int color_pair) {
+
+    mvprintw(y, x, "%-8s", label);
+    attron(COLOR_PAIR(color_pair));
     move(y, x + 8);
-    
-    // Print the symbol 'val' times, letting ncurses advance the cursor
+
     for (int i = 0; i < val; i++) {
-        // We add a space after the symbol so ncurses naturally advances
-        // past the double-width character!
-        printw("%s ", symbol); 
+        printw("%s ", symbol);
     }
-    
-    // Turn the color back off
-    //attroff(COLOR_PAIR(color_pair));
+
+    attroff(COLOR_PAIR(color_pair));
 }
 
 void render_ui(Gotchi *g) {
@@ -86,15 +78,15 @@ void render_ui(Gotchi *g) {
     attroff(A_BOLD);
 
     // --- Color Logic ---
-    // int health_pair = (g->health <= 5) ? 3 : ((g->health <= 12) ? 2 : 1);
-    // int hunger_pair = (g->hunger >= 10) ? 3 : ((g->hunger >= 5) ? 2 : 1);
-    
+    int health_pair = (g->health <= 5) ? 3 : ((g->health <= 12) ? 2 : 1);
+    int hunger_pair = (g->hunger >= 10) ? 3 : ((g->hunger >= 5) ? 2 : 1);
+
     // --- Draw Stat Bars with Nerd Font Symbols ---
-    draw_stat_bar(3, 2, "Health:", g->health, 20, "󰋑 "); 
-    draw_stat_bar(4, 2, "Mood:",   g->mood,    5, " ");           
-    draw_stat_bar(5, 2, "Hunger:", g->hunger, 15, "󱐟 "); 
-    draw_stat_bar(6, 2, "Thirst:", g->thirst, 12, "󰖌 ");           
-    draw_stat_bar(7, 2, "Litter:", g->litter, 10, " ");           
+    draw_stat_bar(3, 2, "Health:", g->health, 20, "󰋑 ", health_pair);
+    draw_stat_bar(4, 2, "Mood:",   g->mood,    5, " ", 4);
+    draw_stat_bar(5, 2, "Hunger:", g->hunger, 15, "󱐟 ", hunger_pair);
+    draw_stat_bar(6, 2, "Thirst:", g->thirst, 12, "󰖌 ", 4);
+    draw_stat_bar(7, 2, "Litter:", g->litter, 10, " ", 2);
 
     // Show sickness status
     if (g->isSick) {
@@ -113,6 +105,6 @@ void render_ui(Gotchi *g) {
 
     // Draw controls at the bottom
     mvprintw(max_y - 2, 2, "Controls: [f] Feed  [w] Water  [p] Play  [c] Clean  [q] Quit");
-    
+
     refresh();
 }
