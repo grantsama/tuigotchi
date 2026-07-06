@@ -12,8 +12,7 @@ Tamagotchi-like terminal UI application, built in C using ncurses.
   - Keyboard interrupts for feeding, playing, and cleaning.
 
 ## TODO
-- [ ] Add a Game Over / Death state when health reaches 0
-- [ ] Implement sickness triggers (e.g., getting sick from high litter)
+- [ ] Make improvements?
 
 # Installation
 1. Clone this repo

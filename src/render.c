@@ -79,6 +79,25 @@ void render_ui(Gotchi *g) {
     getmaxyx(stdscr, max_y, max_x);
     box(stdscr, 0, 0);
 
+    // --- DEATH SCREEN ---
+    if (g->isDead) {
+        attron(A_BOLD);
+        // Draw a simple ASCII tombstone in the center
+        mvprintw(max_y / 2 - 4, max_x / 2 - 6, "   .---.  ");
+        mvprintw(max_y / 2 - 3, max_x / 2 - 6, " / R.I.P \\ ");
+        mvprintw(max_y / 2 - 2, max_x / 2 - 6, "|         |");
+        mvprintw(max_y / 2 - 1, max_x / 2 - 6, "|  Gone   |");
+        mvprintw(max_y / 2    , max_x / 2 - 6, "|_________|");
+
+        // Print the tragic news
+        mvprintw(max_y / 2 + 2, (max_x - (strlen(g->name) + 16)) / 2, "%s has passed away.", g->name);
+        attroff(A_BOLD);
+
+        mvprintw(max_y - 2, 2, "Controls: [q] Quit   [r] Rest in peace (Delete save & restart)");
+        refresh();
+        return;
+    }
+
     // Print the Gotchi's name centered at the top
     attron(A_BOLD);
     mvprintw(1, (max_x - strlen(g->name)) / 2, "%s", g->name);

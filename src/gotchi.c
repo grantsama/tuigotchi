@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -13,12 +14,14 @@ Gotchi *gotchi_init(bool isNew) {
         gotchi->health = MAX_HEALTH;
         gotchi->mood = 3;
         gotchi->isSick = false;
+        gotchi->isDead = false;
         gotchi->hunger = 2;
         gotchi->thirst = 1;
         gotchi->litter = 0;
         gotchi->name[0] = '\0';
         gotchi->last_saved = time(NULL);
     }
+
     return gotchi;
 }
 
@@ -95,6 +98,9 @@ void gotchi_update(Gotchi *g, int hDiff, int mDiff,
         g->health -= 2; // Adding a health penalty for sickness logic
     }
 
-    // One final clamp for health, just in case penalties dropped it below 0
-    if (g->health < 0) g->health = 0;
+    // One final clamp for health, and check for death
+    if (g->health <= 0) {
+        g->health = 0;
+        g->isDead = true;
+    }
 }

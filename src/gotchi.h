@@ -24,6 +24,7 @@ typedef struct {
     int hunger;
     int thirst;
     bool isSick;
+    bool isDead;
     time_t last_saved;
 } Gotchi;
 

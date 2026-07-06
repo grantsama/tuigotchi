@@ -1,4 +1,4 @@
-CFLAGS = -std=c99
+CFLAGS = -std=c99 -Wall -Wextra
 SRCDIR = src
 INSTALL_DIR = /usr/bin
 CONFIG_DIR = /home/$(USER)/.config/tuigotchi

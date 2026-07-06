@@ -67,25 +67,41 @@ int main(int argc, const char *argv[]) {
     render_ui(the_gotchi);
 
     while ((ch = getch()) != 'q') {
-        int hDiff = 0, mDiff = 0, hungDiff = 0, tDiff = 0, lDiff = 0;
-        switch(ch) {
-            case 'f':  // If feed, decrease hunger
-                hungDiff -= 1;
-                break;
-            case 'w':  // If water, decrease thirst
-                tDiff -= 1;
-                break;
-            case 'p':  // If play, increase mood
-                mDiff += 1;
-                break;
-            case 'c':  // Clean
-                lDiff -= 1;
-                break;
-            case ERR:  // This handles the timeout(1000) interval where no key is pressed!
-                break;
+        if (the_gotchi->isDead) {
+            if (ch == 'r') {
+                // Delete the save file using the path logic from data.c
+                char *saveFileDir = init_savefile_dir();
+                remove(saveFileDir); // remove() deletes a file from the hard drive
+                free(saveFileDir);
+                
+                // End ncurses and exit early so we don't save the dead pet again!
+                endwin();
+                free(the_gotchi);
+                printf("You buried your pet. Run the game again to adopt a new one.\n");
+                return 0; 
+            }
         }
-        // Apply stat changes
-        gotchi_update(the_gotchi, hDiff, mDiff, hungDiff, tDiff, lDiff);
+        else {
+            int hDiff = 0, mDiff = 0, hungDiff = 0, tDiff = 0, lDiff = 0;
+            switch(ch) {
+                case 'f':  // If feed, decrease hunger
+                    hungDiff -= 1;
+                    break;
+                case 'w':  // If water, decrease thirst
+                    tDiff -= 1;
+                    break;
+                case 'p':  // If play, increase mood
+                    mDiff += 1;
+                    break;
+                case 'c':  // Clean litter
+                    lDiff -= 1;
+                    break;
+                case ERR:  // This handles no key pressed
+                    break;
+            }
+            // Apply stat changes
+            gotchi_update(the_gotchi, hDiff, mDiff, hungDiff, tDiff, lDiff);
+        }
         // Redraw the screen with the updated stats
         render_ui(the_gotchi);
     }

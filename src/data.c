@@ -48,12 +48,23 @@ int check_save(void) {
 
 int get_userpet(void) {
     /* Prompts user to choose a pet */
-    int petChoice;
-    printf("Choose your pet: 1. Cat  2. Dog  3. Hamster (input number)\n");
-    printf("> ");
-    scanf("%d", &petChoice);
+    int petChoice = 0;
 
-    while(getchar() != '\n');  // Remove the newline left by scanf so fgets works later
+    while (1) {
+        printf("Choose your pet: 1. Cat  2. Dog  3. Hamster (input number)\n");
+        printf("> ");
+        
+        // scanf returns 1 if it successfully reads an integer
+        if (scanf("%d", &petChoice) == 1) {
+            while(getchar() != '\n');  // Remove the newline left by scanf
+            if (petChoice >= 1 && petChoice <= 3) {
+                break;
+            }
+        } else {
+            while(getchar() != '\n');  // clear input buffer
+        }
+        printf("Invalid pet choice! Please try again.\n\n");
+    }
 
     if (petChoice == 1) {
         printf("Cat Selected!\n");
@@ -61,7 +72,7 @@ int get_userpet(void) {
     else if (petChoice == 2) {
         printf("Dog Selected!\n");
     }
-    else {
+    else if (petChoice == 3) {
         printf("Hamster Selected!\n");
     }
 
@@ -70,8 +81,8 @@ int get_userpet(void) {
 
 void get_petname(char *nameBuf, int maxLen) {
     printf("What will you name your pet?\n> ");
+
     if (fgets(nameBuf, maxLen, stdin) != NULL) {
-        // Strip the trailing newline character that fgets captures
         nameBuf[strcspn(nameBuf, "\n")] = '\0';
     }
 }
