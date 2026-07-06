@@ -119,20 +119,17 @@ void render_ui(Gotchi *g) {
     }
 
     // --- Draw Stat Bars with Nerd Font Symbols ---
-    // We now use the constants from gotchi.h instead of hardcoded numbers!
     draw_stat_bar(3, 2, "Health:", g->health, MAX_HEALTH, "󰋑 ", health_pair);
     draw_stat_bar(4, 2, "Mood:",   g->mood,   MAX_MOOD,   " ", 4);
-    draw_stat_bar(5, 2, "Hunger:", g->hunger, MAX_HUNGER, "󱐟 ", hunger_pair);
-    draw_stat_bar(6, 2, "Thirst:", g->thirst, MAX_THIRST, "󰖌 ", thirst_pair);
-    draw_stat_bar(7, 2, "Litter:", g->litter, MAX_LITTER, " ", litter_pair);
+    draw_stat_bar(7, 2, "Hunger:", g->hunger, MAX_HUNGER, "󱐟 ", hunger_pair);
+    draw_stat_bar(8, 2, "Thirst:", g->thirst, MAX_THIRST, "󰖌 ", thirst_pair);
+    draw_stat_bar(9, 2, "Litter:", g->litter, MAX_LITTER, " ", litter_pair);
 
     // Show sickness status
     if (g->isSick) {
         attron(COLOR_PAIR(4) | A_STANDOUT);
-        mvprintw(9, 2, "STATUS: SICK!");
+        mvprintw(12, 2, "STATUS: SICK!");
         attroff(COLOR_PAIR(4) | A_STANDOUT);
-    } else {
-        mvprintw(9, 2, "STATUS: OK");
     }
 
     // Determine which animation frame to show (0 or 1) based on time
