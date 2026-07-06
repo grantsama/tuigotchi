@@ -9,6 +9,13 @@ void draw_external_art(int animal, int frame, int max_y, int max_x) {
     char filepath[256];
     const char *home = getenv("HOME");
 
+    if (home == NULL) {
+        attron(A_BOLD);
+        mvprintw(max_y / 2, max_x / 2 - 16, "Error: HOME variable missing!");
+        attroff(A_BOLD);
+        return; // Exit the function early so it doesn't crash!
+    }
+
     // Map the integer animal ID to the prefix of our text files
     const char *animal_names[] = {"cat", "dog", "ham"};
 

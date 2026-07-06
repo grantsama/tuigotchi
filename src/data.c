@@ -3,21 +3,42 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+#include <sys/stat.h>
 #include "data.h"
 
 char *init_savefile_dir(void) {
     /* Get save directory */
     char *saveFileDir = NULL;
     const char *home = getenv("HOME");
-    saveFileDir = malloc(strlen(home) + strlen("/.config/tuigotchi/dat/save") + 1);
+
+    if (home == NULL) {
+        fprintf(stderr, "Error: HOME environment variable is not set.\n");
+        fprintf(stderr, "TUIGotchi requires a home directory to save your pet's data.\n");
+        exit(1);
+    }
+
+    const char *pathSuffix = "/.config/tuigotchi/dat/save";
+    saveFileDir = malloc(strlen(home) + strlen(pathSuffix) + 1);
 
     if (saveFileDir == NULL) {
         perror("Error allocating memory for save directory\n");
         exit(1);
     }
 
+    // Build the final save file path
     strcpy(saveFileDir, home);
-    strcat(saveFileDir, "/.config/tuigotchi/dat/save");
+    strcat(saveFileDir, pathSuffix);
+
+    // 2. DIRECTORY CREATION: Make sure the folders actually exist!
+    char dirPath[512];
+
+    // Create ~/.config/tuigotchi
+    snprintf(dirPath, sizeof(dirPath), "%s/.config/tuigotchi", home);
+    mkdir(dirPath, 0777);
+
+    // Create ~/.config/tuigotchi/dat
+    snprintf(dirPath, sizeof(dirPath), "%s/.config/tuigotchi/dat", home);
+    mkdir(dirPath, 0777);
 
     return saveFileDir;
 }
@@ -47,21 +68,24 @@ int check_save(void) {
 }
 
 int get_userpet(void) {
-    /* Prompts user to choose a pet */
     int petChoice = 0;
-
     while (1) {
-        printf("Choose your pet: 1. Cat  2. Dog  3. Hamster (input number)\n");
-        printf("> ");
-        
-        // scanf returns 1 if it successfully reads an integer
+        printf("Choose your pet: 1. Cat  2. Dog  3. Hamster (input number)\n> ");
+
         if (scanf("%d", &petChoice) == 1) {
-            while(getchar() != '\n');  // Remove the newline left by scanf
+            int c;
+            while((c = getchar()) != '\n' && c != EOF);
             if (petChoice >= 1 && petChoice <= 3) {
                 break;
             }
         } else {
-            while(getchar() != '\n');  // clear input buffer
+            // Check if the user pressed Ctrl+D
+            if (feof(stdin)) {
+                printf("\nInput stream closed. Exiting...\n");
+                exit(1);
+            }
+            int c;
+            while((c = getchar()) != '\n' && c != EOF);
         }
         printf("Invalid pet choice! Please try again.\n\n");
     }
@@ -80,10 +104,24 @@ int get_userpet(void) {
 }
 
 void get_petname(char *nameBuf, int maxLen) {
-    printf("What will you name your pet?\n> ");
+    while (1) {
+        printf("What will you name your pet?\n> ");
 
-    if (fgets(nameBuf, maxLen, stdin) != NULL) {
-        nameBuf[strcspn(nameBuf, "\n")] = '\0';
+        if (fgets(nameBuf, maxLen, stdin) != NULL) {
+            nameBuf[strcspn(nameBuf, "\n")] = '\0';
+
+            if (strlen(nameBuf) > 0) {
+                break;
+            }
+        } else {
+            // If fgets returns NULL because of Ctrl+D
+            if (feof(stdin)) {
+                printf("\nInput stream closed. Exiting...\n");
+                exit(1);
+            }
+        }
+
+        printf("Name cannot be empty! Try again.\n\n");
     }
 }
 

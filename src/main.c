@@ -14,7 +14,7 @@ int main(int argc, const char *argv[]) {
         printf("Try 'tuigotchi -h' for more information.\n");
         return 1;
     }
-    if ((argc == 2) && (strcmp(argv[1], "-h"))) {
+    if ((argc == 2) && (strcmp(argv[1], "-h") == 0)) {
         printf("Arguments:\n");
         printf("savefile : program run from specified save file\n");
     }
