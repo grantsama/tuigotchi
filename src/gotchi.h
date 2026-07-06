@@ -33,6 +33,9 @@ typedef struct {
  * DOES NOT SET ANIMAL CHOICE OR NAME */
 Gotchi *gotchi_init(bool isNew);
 
+/* Calculates time since last launched and updates gotchi */
+int gotchi_process_offtime(Gotchi *g);
+
 /* Update the gotchi.
  * Alter gotchi's attributes based on function params. */
 void gotchi_update(Gotchi *gotchi, int healthDiff, int moodDiff,

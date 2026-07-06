@@ -22,6 +22,22 @@ Gotchi *gotchi_init(bool isNew) {
     return gotchi;
 }
 
+int gotchi_process_offtime(Gotchi *gyatchi) {
+    if (gyatchi == NULL) {
+        return 0;
+    }
+
+    time_t now = time(NULL);
+    double seconds_passed = difftime(now, gyatchi->last_saved);
+
+    int intervals = (int)(seconds_passed / 86400);  // 86400 seconds == 24 hours
+    if (intervals > 0) {
+        gotchi_update(gyatchi, 0, -intervals, intervals, intervals, intervals);
+    }
+
+    return intervals;
+}
+
 void gotchi_update(Gotchi *g, int hDiff, int mDiff,
                    int hungDiff, int tDiff, int lDiff) {
     if (g == NULL) return;  // avoid modifying a NULL pointer
