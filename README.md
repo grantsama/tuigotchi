@@ -15,8 +15,10 @@ Tamagotchi-like terminal UI application, built in C using ncurses.
 - [ ] Make improvements?
 
 # Installation
-1. Clone this repo
-2. `cd` into "tuigotchi"
+1. Clone this repo:
+   `git clone https://github.com/grantsama/tuigotchi.git`
+2. cd into "tuigotchi":
+   `cd tuigotchi`
 3. Run `make install` (You may be prompted to enter your passcode)
 4. Done!
 
