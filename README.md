@@ -24,6 +24,7 @@ Tamagotchi-like terminal UI application, built in C using ncurses.
 
 ## Dependencies
 - A "nerd font" installed and selected in your terminal
+- git
 - gcc
 - make
 - ncurses
