@@ -73,12 +73,12 @@ int main(int argc, const char *argv[]) {
                 char *saveFileDir = init_savefile_dir();
                 remove(saveFileDir); // remove() deletes a file from the hard drive
                 free(saveFileDir);
-                
+
                 // End ncurses and exit early so we don't save the dead pet again!
                 endwin();
                 free(the_gotchi);
                 printf("You buried your pet. Run the game again to adopt a new one.\n");
-                return 0; 
+                return 0;
             }
         }
         else {

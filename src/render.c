@@ -57,8 +57,8 @@ void draw_external_art(int animal, int frame, int max_y, int max_x) {
     }
 }
 
-void draw_stat_bar(int y, int x, const char* label, int val,
-                   int max, const char* symbol, int color_pair) {
+void draw_stat_bar(int y, int x, const char *label, int val,
+                   int max, const char *symbol, int color_pair) {
     // Print the label in default colors
     mvprintw(y, x, "%-8s", label);
 
