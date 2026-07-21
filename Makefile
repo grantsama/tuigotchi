@@ -31,6 +31,7 @@ build: tuigotchi
 uninstall:
 	sudo rm -f $(INSTALL_DIR)/tuigotchi
 	rm -rf $(CONFIG_DIR)
+	build clean
 	@printf "\nUninstallation complete!\n"
 
 # To build and clean all in one go
