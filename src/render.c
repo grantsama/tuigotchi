@@ -79,7 +79,9 @@ void draw_stat_bar(int y, int x, const char *label, int val,
 }
 
 void render_ui(Gotchi *g) {
-    if (g == NULL) return;
+    if (g == NULL) {
+        return;
+    }
 
     erase();
     int max_y, max_x;

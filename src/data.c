@@ -146,6 +146,7 @@ void save(Gotchi *gotchi) {
     if (bytesWritten != 1) {
         perror("Error writing save data\n");
     }
+
     fclose(f);
     free(saveFileDir);
 }

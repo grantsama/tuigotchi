@@ -17,6 +17,7 @@ int main(int argc, const char *argv[]) {
     if ((argc == 2) && (strcmp(argv[1], "-h") == 0)) {
         printf("Arguments:\n");
         printf("savefile : program run from specified save file\n");
+        return 0;
     }
 
     if (setlocale(LC_ALL, "") == NULL) {
