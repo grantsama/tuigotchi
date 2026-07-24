@@ -26,10 +26,20 @@ Gotchi *gotchi_init(bool isNew) {
 }
 
 void gotchi_tick(Gotchi *g) {
-    /* Helper function for gotchi_process_offline_time */
+    /* Helper function for gotchi_process_offtime and live decay */
     if (g == NULL) return;
 
+    // 1. Natural stat decay over time: mood drops, others increase
+    gotchi_update(g, 0, -1, 1, 1, 1);
+
+    // 2. Check sickness trigger based on the newly updated litter level
+    if (g->litter >= TOO_POOPY) {
+        g->isSick = true;
+    }
+
+    // 3. Calculate health penalties based on critical states
     int health_penalty = 0;
+
     if (g->isSick) {
         health_penalty -= 2;
     }
@@ -37,10 +47,15 @@ void gotchi_tick(Gotchi *g) {
         health_penalty -= 2;
     }
     if (g->thirst >= TOO_THIRSTY) {
-        health_penalty -= 2;
+        health_penalty -= 3;
+    }
+    if (g->mood == 0) {
+        health_penalty -= 1;
     }
 
-    gotchi_update(g, health_penalty, -1, 1, 1, 1);
+    // 4. Apply the calculated health penalty
+    // We pass 0 for everything else because we already applied natural decay above
+    gotchi_update(g, health_penalty, 0, 0, 0, 0);
 }
 
 int gotchi_process_offtime(Gotchi *g) {
@@ -51,7 +66,8 @@ int gotchi_process_offtime(Gotchi *g) {
     time_t now = time(NULL);
     double seconds_passed = difftime(now, g->last_saved);
 
-    int intervals = (int)(seconds_passed / 86400);  // 86400 seconds == 24 hours
+    // Use the shared TICK_INTERVAL constant
+    int intervals = (int)(seconds_passed / TICK_RATE);
     for (int i = 0; i < intervals; i++) {
         gotchi_tick(g);
     }
@@ -85,18 +101,6 @@ void gotchi_update(Gotchi *g, int hDiff, int mDiff,
 
     if (g->litter > MAX_LITTER) g->litter = MAX_LITTER;
     if (g->litter < 0) g->litter = 0;
-
-    // Apply penalties if thresholds are crossed
-    if (g->hunger >= TOO_HUNGRY)
-        g->health -= 2;
-    if (g->thirst >= TOO_THIRSTY)
-        g->health -= 3;
-    if (g->mood == 0)
-        g->health -= 1;
-    if (g->litter >= TOO_POOPY) {
-        g->isSick = true;
-        g->health -= 2; // Adding a health penalty for sickness logic
-    }
 
     // One final clamp for health, and check for death
     if (g->health <= 0) {

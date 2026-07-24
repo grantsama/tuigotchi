@@ -166,8 +166,8 @@ void render_ui(Gotchi *g) {
     // Load and draw the ASCII art from the external text file
     draw_external_art(g->animal, current_frame, max_y, max_x);
 
-    // Draw controls at the bottom
-    mvprintw(max_y - 2, 2, "Controls: [f] Feed  [w] Water  [p] Play  [c] Clean  [q] Quit");
+    // Draw controls at the bottom (Now includes [m] Meds)
+    mvprintw(max_y - 2, 2, "Controls: [f] Feed  [w] Water  [p] Play  [c] Clean  [m] Meds  [q] Quit");
 
     refresh();
 }

@@ -1,4 +1,4 @@
-# TUIGotchi [WIP]
+# TUIGotchi v0.91 [WIP]
 Tamagotchi-like terminal UI application, built in C using ncurses.
 
 ## Features
@@ -12,7 +12,8 @@ Tamagotchi-like terminal UI application, built in C using ncurses.
   - Keyboard interrupts for feeding, playing, and cleaning.
 
 ## TODO
-- [ ] Make improvements?
+- [ ] More program arguments and/or flags
+- [x] Custom save file argument
 
 # Installation
 1. Clone this repo:

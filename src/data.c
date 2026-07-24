@@ -6,8 +6,19 @@
 #include <sys/stat.h>
 #include "data.h"
 
-char *init_savefile_dir(void) {
-    /* Get save directory */
+char *init_savefile_dir(const char *dirpath) {
+    // Save file passed via -s flag
+    if (dirpath != NULL) {
+        char *saveFileDir = malloc(strlen(dirpath) + 1);
+        if (saveFileDir == NULL) {
+            perror("Error allocating memory for save directory\n");
+            exit(1);
+        }
+        strcpy(saveFileDir, dirpath);
+        return(saveFileDir);
+    }
+
+    // Default save file
     char *saveFileDir = NULL;
     const char *home = getenv("HOME");
 
@@ -43,11 +54,11 @@ char *init_savefile_dir(void) {
     return saveFileDir;
 }
 
-int check_save(void) {
+int check_save(const char *dirpath) {
     /* Checks if save exists and is the correct size
      * returns 1 if true, else returns 0
      */
-    char *saveFileDir = init_savefile_dir();
+    char *saveFileDir = init_savefile_dir(dirpath);
     int result = 0;
 
     FILE *f = fopen(saveFileDir, "rb");
@@ -108,11 +119,18 @@ void get_petname(char *nameBuf, int maxLen) {
         printf("What will you name your pet?\n> ");
 
         if (fgets(nameBuf, maxLen, stdin) != NULL) {
-            nameBuf[strcspn(nameBuf, "\n")] = '\0';
+            char *newline = strchr(nameBuf, '\n');
+            if (newline != NULL) {
+                *newline = '\0';
+            } else {
+                int c;
+                while ((c = getchar()) != '\n' && c != EOF);
+            }
 
             if (strlen(nameBuf) > 0) {
                 break;
             }
+
         } else {
             // If fgets returns NULL because of Ctrl+D
             if (feof(stdin)) {
@@ -125,7 +143,7 @@ void get_petname(char *nameBuf, int maxLen) {
     }
 }
 
-void save(Gotchi *gotchi) {
+void save(Gotchi *gotchi, const char *dirpath) {
     if (gotchi == NULL) {
         perror("Cannot save: Gotchi is NULL");
         return;
@@ -133,31 +151,49 @@ void save(Gotchi *gotchi) {
 
     gotchi->last_saved = time(NULL);  // record time before saving data
 
-    char *saveFileDir = init_savefile_dir();
+    char *saveFileDir = init_savefile_dir(dirpath);
     FILE *f = fopen(saveFileDir, "wb");
+
+    // --- GRACEFUL FAIL & FALLBACK LOGIC ---
     if (f == NULL) {
-        perror("Error opening save file for writing\n");
-        free(saveFileDir);
-        free(gotchi);
-        exit(1);
+        fprintf(stderr, "Warning: Could not open save path '%s' for writing.\n", saveFileDir);
+
+        // If they used a custom path, try falling back to the default path
+        if (dirpath != NULL) {
+            fprintf(stderr, "Attempting to save to the default directory instead...\n");
+            free(saveFileDir);
+            saveFileDir = init_savefile_dir(NULL); // Pass NULL to get the default path
+            f = fopen(saveFileDir, "wb");
+        }
+
+        // If the file pointer is STILL NULL, abort the save cleanly
+        if (f == NULL) {
+            fprintf(stderr, "Error: Could not save your Gotchi. Progress for this session is lost.\n");
+            free(saveFileDir);
+            return; // Return instead of exit(1)
+        }
     }
+    // --------------------------------------
 
     size_t bytesWritten = fwrite(gotchi, sizeof(Gotchi), 1, f);
     if (bytesWritten != 1) {
         perror("Error writing save data\n");
+    } else {
+        printf("Gotchi saved successfully to: %s\n", saveFileDir);
     }
 
     fclose(f);
     free(saveFileDir);
 }
 
-void readsave(Gotchi *gotchi) {
+void readsave(Gotchi *gotchi, const char *dirpath) {
     if (gotchi == NULL) {
         perror("Cannot load: Gotchi pointer is NULL\n");
         return;
     }
 
-    char *saveFileDir = init_savefile_dir();
+    // Pass the custom_path down to our directory initializer
+    char *saveFileDir = init_savefile_dir(dirpath);
     FILE *f = fopen(saveFileDir, "rb");
     if (f == NULL) {
         perror("Error opening save file for reading\n");

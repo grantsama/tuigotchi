@@ -14,6 +14,7 @@
 #define MAX_HUNGER 5
 #define MAX_THIRST 5
 #define MAX_LITTER 5
+#define TICK_RATE 86400 // == 24hrs
 
 typedef struct {
     short animal;
@@ -36,6 +37,9 @@ Gotchi *gotchi_init(bool isNew);
 
 /* Calculates time since last launched and updates gotchi */
 int gotchi_process_offtime(Gotchi *g);
+
+/* Live tick for background stat decay */
+void gotchi_tick(Gotchi *g);
 
 /* Update the gotchi.
  * Alter gotchi's attributes based on function params. */
