@@ -28,10 +28,9 @@ build: tuigotchi
 	@printf "\nInstallation complete!\n"
 
 # Uninstall the executable, configuration, and save files
-uninstall:
+uninstall: clean
 	sudo rm -f $(INSTALL_DIR)/tuigotchi
 	rm -rf $(CONFIG_DIR)
-	build clean
 	@printf "\nUninstallation complete!\n"
 
 # To build and clean all in one go
